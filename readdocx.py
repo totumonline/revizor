@@ -3,21 +3,21 @@ import json
 import argparse
 import sys
 
-# Настройка парсера аргументов командной строки
+# Command-line argument parser configuration
 parser = argparse.ArgumentParser(description="Extract text and tables from a DOCX file.")
 parser.add_argument("docx_path", type=str, help="Path to the DOCX file")
 args = parser.parse_args()
-docx_path = args.docx_path  # Читаем путь из аргумента командной строки
+docx_path = args.docx_path
 
-# Список для хранения данных всех таблиц и текстов
+# List for storing data from all tables and texts
 data = {"tables": [], "text": "", "texttables": []}
 
 def extract_text(doc):
-    """Извлекает текст из всех параграфов документа."""
+    """Extracts text from all paragraphs of the document."""
     return "\n".join([p.text for p in doc.paragraphs if p.text.strip()])
 
 def extract_tables(doc):
-    """Извлекает таблицы из документа в формате JSON и текстовом виде."""
+    """Extracts tables from the document in JSON and text formats."""
     tables_data = []
     text_tables = []
     for table in doc.tables:
@@ -35,10 +35,10 @@ def extract_tables(doc):
     
     return tables_data, text_tables
 
-# Открываем DOCX-файл и извлекаем данные
+# Open the DOCX file and extract data
 doc = docx.Document(docx_path)
 data["text"] = extract_text(doc)
 data["tables"], data["texttables"] = extract_tables(doc)
 
-# Выводим JSON в stdout
+# Output JSON to stdout
 sys.stdout.write(json.dumps(data, ensure_ascii=False, indent=4) + "\n")
