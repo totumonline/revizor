@@ -82,7 +82,7 @@ async function getPageContent(url) {
     console.error(err?.stack || err?.toString() || 'Unknown error');
   }
 
-  // --- НАЧИНАЕМ ОБРАБОТКУ HTML ---
+  // --- PROCESSING DOM ---
   console.log('!**********!');
 
   const $ = cheerio.load(rawHtml);
@@ -144,7 +144,7 @@ async function getPageContent(url) {
     console.log(markdown.length > 600_000 ? 'too much tokens' : markdown);
   }
 
-  // Останавливаем Lightpanda
+  // Stopping Lightpanda
   if (proc) {
     proc.stdout.destroy();
     proc.stderr.destroy();
